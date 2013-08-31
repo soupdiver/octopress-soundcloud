@@ -46,7 +46,6 @@ module Jekyll
           @options = ([] unless options) || options.split(" ")
         end
       else
-        puts "no match"
         #parsing the "old" way with type and id
         if /(?<type>\w+)\s+(?<id>\d+)(?:\s+(?<options>.*))?/ =~ markup
           @type  = type
