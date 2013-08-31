@@ -41,9 +41,14 @@ module Jekyll
         #parsing the "new" way with only pasing the url of the ressource
         if /(?<url>[a-z0-9\/\-\:\.]+)(?:\s+(?<options>.*))?/ =~ markup
           info = retrieve_info(url)
-          @type  = info['kind'] + 's'
-          @id    = info['id']
-          @options = ([] unless options) || options.split(" ")
+          if info["errors"] == nil
+            @type  = info['kind'] + 's'
+            @id    = info['id']
+            @options = ([] unless options) || options.split(" ")
+          else
+            @type = :error
+            @options = []
+          end
         end
       else
         #parsing the "old" way with type and id
@@ -69,12 +74,14 @@ module Jekyll
     end
 
     def render(context)
-      if @type and @id
+      if @type and @type != :error and @id
         @height = (450 unless @type == 'tracks') || 166
         @resource = (@type unless @type === 'favorites') || 'users'
         @extra = ("" unless @type === 'favorites') || '%2Ffavorites'
         @joined_options = @options.join("&amp;")
         "<iframe width=\"100%\" height=\"#{@height}\" scrolling=\"no\" frameborder=\"no\" src=\"http://w.soundcloud.com/player/?url=http%3A%2F%2Fapi.soundcloud.com%2F#{@resource}%2F#{@id}#{@extra}&amp;#{@joined_options}\"></iframe>"
+      elsif @type == :error
+        "Error - Sound not available!"
       else
         "Error processing input, expected syntax: {% soundcloud type id [options...] %} received: #{@markup}"
       end
