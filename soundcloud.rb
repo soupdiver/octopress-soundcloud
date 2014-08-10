@@ -67,7 +67,11 @@ module Jekyll
       case response
       when Net::HTTPRedirection then
         location = response['location']
-        response = Net::HTTP.get_response(URI(location))
+        uri = URI.parse(location)
+        req = Net::HTTP::Get.new(uri.request_uri)
+        http = Net::HTTP.new(uri.host, uri.port)
+        http.use_ssl = (uri.scheme == "https")
+        response = http.request(req)
       end
       json = JSON.parse response.body
       return json
