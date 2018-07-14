@@ -79,7 +79,7 @@ module Jekyll
         @resource = (@type unless @type === 'favorites') || 'users'
         @extra = ("" unless @type === 'favorites') || '%2Ffavorites'
         @joined_options = @options.join("&amp;")
-        "<iframe width=\"100%\" height=\"#{@height}\" scrolling=\"no\" frameborder=\"no\" src=\"http://w.soundcloud.com/player/?url=http%3A%2F%2Fapi.soundcloud.com%2F#{@resource}%2F#{@id}#{@extra}&amp;#{@joined_options}\"></iframe>"
+        "<iframe width=\"100%\" height=\"#{@height}\" scrolling=\"no\" frameborder=\"no\" src=\"https://w.soundcloud.com/player/?url=https%3A%2F%2Fapi.soundcloud.com%2F#{@resource}%2F#{@id}#{@extra}&amp;#{@joined_options}\"></iframe>"
       elsif @type == :error
         "Error - Sound not available!"
       else
